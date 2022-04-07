@@ -1,0 +1,13 @@
+---
+- hosts: jenkins_slaves
+  gather_facts: no
+  become: true
+  
+  tasks:
+  - name: Run update
+    yum:
+      update_cache: true
+  - name: Install jdk
+    package:
+      name: java-1.8.0-openjdk-devel
+      state: present
