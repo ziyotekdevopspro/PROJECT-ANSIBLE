@@ -1,0 +1,55 @@
+---
+#Created by Khai Hoang (Kyle)
+#Project:DEVOPS16
+#Description: Setup configuration for Project boxes 
+- name: Setup configuration for boxes
+  hosts: kubernetes
+  gather_facts: no
+  # become: true
+
+  tasks:
+  - name: Stop and disable firewalld.
+    service:
+      name: firewalld
+      state: stopped
+      enabled: false
+
+  - name: Disable SSH Root Login
+    #Verify: Rum SSH command to the machine with root user
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin'
+      line: "PermitRootLogin no"
+      state: present
+      backup: yes
+    notify:
+      - restart ssh
+
+  - name: Disabling SELinux state
+    #Verify: Run command 'sestate'
+    selinux:
+      state: disabled
+  # - name: Enforcing SELinux
+  #   selinux:
+  #     state: enforcing
+  #     policy: targeted
+
+  - name: Install packages
+    #Verify: Run following commands:
+    #yum list installed | grep bind-utils
+
+    yum:
+      name: 
+        - bind-utils
+        - man
+        - man-pages
+        - mlocate
+        - sysstat
+      state: latest
+
+  handlers:
+  - name: restart ssh
+    service:
+      name: sshd
+      state: restarted
+

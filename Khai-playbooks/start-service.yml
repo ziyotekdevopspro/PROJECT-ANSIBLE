@@ -1,0 +1,13 @@
+---
+- hosts: jenkins
+  become: yes
+
+  tasks:
+  - name: start services 
+    service:
+      name: "{{ item }}"
+      state: started
+    with_items:
+      - 'jenkins'
+
+      
