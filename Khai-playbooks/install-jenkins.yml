@@ -1,8 +1,6 @@
 ---
-- hosts: jenkins
-  roles:
-    - role: ansiblebit.oracle-java
-      oracle_java_set_as_default: yes
+- hosts: test
+
   tasks:
     - name: Ensure Jenkins Repository is Installed
       yum_repository:
